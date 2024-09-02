@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.65">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    span.s1 {font: 12.0px 'PingFang SC'}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Mapbox with IP Geolocation&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body, html { margin: 0; padding: 0; height: 100%; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#map { width: 100%; height: 100%; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- <span class="s1">加载</span>Mapbox JavaScript <span class="s1">和</span> CSS --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" /&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- <span class="s1">放置</span>Mapbox<span class="s1">地图的</span>HTML --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="map"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- <span class="s1">初始化</span>Mapbox<span class="s1">地图并添加</span>IP<span class="s1">定位功能</span> --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>mapboxgl.accessToken = 'pk.eyJ1IjoibWFjYXBha2EiLCJhIjoiY20waG50eG9tMGQ1NjJsb21lczZ6ZzFneSJ9.bZX7-oKcDtm2tM4Ib9WeTA';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const map = new mapboxgl.Map({</p>
+<p class="p1"><span class="Apple-converted-space">            </span>container: 'map', // <span class="s1">地图容器的</span>id</p>
+<p class="p1"><span class="Apple-converted-space">            </span>style: 'mapbox://styles/macapaka/cm0hokb2u003y01pmabv3e7sm', // <span class="s1">地图样式</span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>center: [0, 0], // <span class="s1">初始中心点</span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>zoom: 2 // <span class="s1">初始缩放级别</span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// <span class="s1">获取用户的</span>IP<span class="s1">定位</span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>fetch('https://ipinfo.io/json?token=f41e3d1f53c586')</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.then(response =&gt; response.json())</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.then(data =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const loc = data.loc.split(','); // <span class="s1">获取位置坐标</span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const lat = parseFloat(loc[0]);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const lon = parseFloat(loc[1]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// <span class="s1">更新地图中心点并缩放</span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>map.setCenter([lon, lat]);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>map.setZoom(10);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// <span class="s1">在地图上添加用户位置标记</span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>new mapboxgl.Marker()</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.setLngLat([lon, lat])</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.addTo(map);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>})</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.catch(error =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('IP<span class="s1">定位失败</span>: ', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
